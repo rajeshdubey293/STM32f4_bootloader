@@ -45,7 +45,7 @@ uint8_t supported_commands[] = {
 		BL_BOOT_APPLICATION_1,
 		BL_BOOT_APPLICATION_2,} ;
 
-//#define BL_DEBUG_MSG_EN
+#define BL_DEBUG_MSG_EN
 
 
 #define D_UART   &huart3
