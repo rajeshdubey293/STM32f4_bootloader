@@ -128,9 +128,19 @@ int main(void)
 	/* USER CODE END WHILE */
 
 	/* USER CODE BEGIN 3 */
+	printmsg("Press User Key to Stop Auto Boot in\r\n");
+	HAL_Delay(500);
+	printmsg("4 Seconds..\r\n");
+	HAL_Delay(1000);
+	printmsg("3 Seconds..\r\n");
+	HAL_Delay(1000);
+	printmsg("2 Seconds..\r\n");
+	HAL_Delay(1000);
+	printmsg("1 Seconds..\r\n");
+	HAL_Delay(1000);
 	if ( HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET )
 	{
-		printmsg("BL_DEBUG_MSG:Button is pressed .. going to BL mode\r\n");
+		printmsg("BL_DEBUG_MSG:Button is Pressed .. Going to BL Mode\r\n");
 
 		//we should continue in bootloader mode
 		bootloader_uart_read_data();
@@ -138,7 +148,7 @@ int main(void)
 	}
 	else
 	{
-		printmsg("BL_DEBUG_MSG:Button is not pressed .. executing user app\r\n");
+		printmsg("BL_DEBUG_MSG:Button is Not Pressed .. Executing User Application\r\n");
 
 		//jump to user application
 		bootloader_jump_to_user_app_1();
@@ -509,6 +519,7 @@ void bootloader_handle_getver_cmd(uint8_t *bl_rx_buffer)
 		bl_version=get_bootloader_version();
 		printmsg("BL_DEBUG_MSG:BL_VER : %d %#x\r\n",bl_version,bl_version);
 		bootloader_uart_write_data(&bl_version,1);
+
 
 	}else
 	{

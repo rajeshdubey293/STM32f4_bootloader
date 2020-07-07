@@ -34,6 +34,7 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include<stdint.h>
 #include <stdarg.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -126,7 +127,8 @@ uint8_t configure_flash_sector_rw_protection(uint8_t sector_details, uint8_t pro
 uint16_t read_OB_rw_protection_status(void);
 
 //version 1.0
-#define BL_VERSION 0x10
+
+#define BL_VERSION 0x20
 
 // our bootloader commands
 
@@ -177,11 +179,11 @@ uint16_t read_OB_rw_protection_status(void);
 #define BL_NACK  0X7F
 
 /*CRC*/
-#define VERIFY_CRC_FAIL    1
-#define VERIFY_CRC_SUCCESS 0
+#define VERIFY_CRC_FAIL    		1
+#define VERIFY_CRC_SUCCESS 		0
 
-#define ADDR_VALID 0x00
-#define ADDR_INVALID 0x01
+#define ADDR_VALID 				0x00
+#define ADDR_INVALID 			0x01
 
 #define INVALID_SECTOR 0x04
 
@@ -193,7 +195,7 @@ uint16_t read_OB_rw_protection_status(void);
 #define SRAM2_END             	(SRAM2_BASE + SRAM2_SIZE)
 #define FLASH_SIZE             	2048*1024     // STM32F429 has MB of FLASH
 #define BKPSRAM_SIZE        	4*1024     // STM32F429 has 4KB of SRAM2
-#define BKPSRAM_END        	(BKPSRAM_BASE + BKPSRAM_SIZE)
+#define BKPSRAM_END        		(BKPSRAM_BASE + BKPSRAM_SIZE)
 
 
 
