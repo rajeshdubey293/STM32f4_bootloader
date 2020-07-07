@@ -1,5 +1,5 @@
 
-STM32F4xx_Custom_Bootloader.elf:     file format elf32-littlearm
+STM32f4_bootloader.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  16 .debug_macro  00021e6e  00000000  00000000  0002a408  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   00006cd1  00000000  00000000  0004c276  2**0
+ 17 .debug_line   00006e81  00000000  00000000  0004c276  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    000cd7cb  00000000  00000000  00052f47  2**0
+ 18 .debug_str    000cd7b9  00000000  00000000  000530f7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  00120712  2**0
+ 19 .comment      0000007b  00000000  00000000  001208b0  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000022c4  00000000  00000000  00120790  2**2
+ 20 .debug_frame  000022c4  00000000  00000000  0012092c  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -83,8 +83,8 @@ Disassembly of section .text:
  80001f2:	bf08      	it	eq
  80001f4:	2800      	cmpeq	r0, #0
  80001f6:	bf1c      	itt	ne
- 80001f8:	f04f 31ff 	movne.w	r1, #4294967295	; 0xffffffff
- 80001fc:	f04f 30ff 	movne.w	r0, #4294967295	; 0xffffffff
+ 80001f8:	f04f 31ff 	movne.w	r1, #4294967295
+ 80001fc:	f04f 30ff 	movne.w	r0, #4294967295
  8000200:	f000 b972 	b.w	80004e8 <__aeabi_idiv0>
  8000204:	f1ad 0c08 	sub.w	ip, sp, #8
  8000208:	e96d ce04 	strd	ip, lr, [sp, #-16]!
@@ -122,7 +122,7 @@ Disassembly of section .text:
  8000264:	4299      	cmp	r1, r3
  8000266:	d909      	bls.n	800027c <__udivmoddi4+0x60>
  8000268:	18eb      	adds	r3, r5, r3
- 800026a:	f107 30ff 	add.w	r0, r7, #4294967295	; 0xffffffff
+ 800026a:	f107 30ff 	add.w	r0, r7, #4294967295
  800026e:	f080 811b 	bcs.w	80004a8 <__udivmoddi4+0x28c>
  8000272:	4299      	cmp	r1, r3
  8000274:	f240 8118 	bls.w	80004a8 <__udivmoddi4+0x28c>
@@ -137,7 +137,7 @@ Disassembly of section .text:
  8000290:	45a4      	cmp	ip, r4
  8000292:	d909      	bls.n	80002a8 <__udivmoddi4+0x8c>
  8000294:	192c      	adds	r4, r5, r4
- 8000296:	f100 33ff 	add.w	r3, r0, #4294967295	; 0xffffffff
+ 8000296:	f100 33ff 	add.w	r3, r0, #4294967295
  800029a:	f080 8107 	bcs.w	80004ac <__udivmoddi4+0x290>
  800029e:	45a4      	cmp	ip, r4
  80002a0:	f240 8104 	bls.w	80004ac <__udivmoddi4+0x290>
@@ -193,7 +193,7 @@ Disassembly of section .text:
  800032c:	4299      	cmp	r1, r3
  800032e:	d907      	bls.n	8000340 <__udivmoddi4+0x124>
  8000330:	18eb      	adds	r3, r5, r3
- 8000332:	f10c 30ff 	add.w	r0, ip, #4294967295	; 0xffffffff
+ 8000332:	f10c 30ff 	add.w	r0, ip, #4294967295
  8000336:	d202      	bcs.n	800033e <__udivmoddi4+0x122>
  8000338:	4299      	cmp	r1, r3
  800033a:	f200 80cd 	bhi.w	80004d8 <__udivmoddi4+0x2bc>
@@ -207,7 +207,7 @@ Disassembly of section .text:
  8000354:	45a0      	cmp	r8, r4
  8000356:	d907      	bls.n	8000368 <__udivmoddi4+0x14c>
  8000358:	192c      	adds	r4, r5, r4
- 800035a:	f100 33ff 	add.w	r3, r0, #4294967295	; 0xffffffff
+ 800035a:	f100 33ff 	add.w	r3, r0, #4294967295
  800035e:	d202      	bcs.n	8000366 <__udivmoddi4+0x14a>
  8000360:	45a0      	cmp	r8, r4
  8000362:	f200 80b6 	bhi.w	80004d2 <__udivmoddi4+0x2b6>
@@ -235,7 +235,7 @@ Disassembly of section .text:
  80003ae:	fa00 f107 	lsl.w	r1, r0, r7
  80003b2:	d90b      	bls.n	80003cc <__udivmoddi4+0x1b0>
  80003b4:	eb1e 0303 	adds.w	r3, lr, r3
- 80003b8:	f109 30ff 	add.w	r0, r9, #4294967295	; 0xffffffff
+ 80003b8:	f109 30ff 	add.w	r0, r9, #4294967295
  80003bc:	f080 8087 	bcs.w	80004ce <__udivmoddi4+0x2b2>
  80003c0:	429c      	cmp	r4, r3
  80003c2:	f240 8084 	bls.w	80004ce <__udivmoddi4+0x2b2>
@@ -250,7 +250,7 @@ Disassembly of section .text:
  80003e0:	45a2      	cmp	sl, r4
  80003e2:	d908      	bls.n	80003f6 <__udivmoddi4+0x1da>
  80003e4:	eb1e 0404 	adds.w	r4, lr, r4
- 80003e8:	f100 33ff 	add.w	r3, r0, #4294967295	; 0xffffffff
+ 80003e8:	f100 33ff 	add.w	r3, r0, #4294967295
  80003ec:	d26b      	bcs.n	80004c6 <__udivmoddi4+0x2aa>
  80003ee:	45a2      	cmp	sl, r4
  80003f0:	d969      	bls.n	80004c6 <__udivmoddi4+0x2aa>
@@ -292,7 +292,7 @@ Disassembly of section .text:
  800045c:	fa04 f402 	lsl.w	r4, r4, r2
  8000460:	d907      	bls.n	8000472 <__udivmoddi4+0x256>
  8000462:	1869      	adds	r1, r5, r1
- 8000464:	f107 3cff 	add.w	ip, r7, #4294967295	; 0xffffffff
+ 8000464:	f107 3cff 	add.w	ip, r7, #4294967295
  8000468:	d22f      	bcs.n	80004ca <__udivmoddi4+0x2ae>
  800046a:	428b      	cmp	r3, r1
  800046c:	d92d      	bls.n	80004ca <__udivmoddi4+0x2ae>
@@ -307,7 +307,7 @@ Disassembly of section .text:
  8000486:	428b      	cmp	r3, r1
  8000488:	d907      	bls.n	800049a <__udivmoddi4+0x27e>
  800048a:	1869      	adds	r1, r5, r1
- 800048c:	f100 3cff 	add.w	ip, r0, #4294967295	; 0xffffffff
+ 800048c:	f100 3cff 	add.w	ip, r0, #4294967295
  8000490:	d217      	bcs.n	80004c2 <__udivmoddi4+0x2a6>
  8000492:	428b      	cmp	r3, r1
  8000494:	d915      	bls.n	80004c2 <__udivmoddi4+0x2a6>
@@ -934,7 +934,7 @@ void  bootloader_uart_read_data(void)
 		//here we will read and decode the commands coming from host
 		//first read only one byte from the host , which is the "length" field of the command packet
 		HAL_UART_Receive(C_UART,bl_rx_buffer,1,HAL_MAX_DELAY);
- 8000834:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
+ 8000834:	f04f 33ff 	mov.w	r3, #4294967295
  8000838:	2201      	movs	r2, #1
  800083a:	4936      	ldr	r1, [pc, #216]	; (8000914 <bootloader_uart_read_data+0xf4>)
  800083c:	4836      	ldr	r0, [pc, #216]	; (8000918 <bootloader_uart_read_data+0xf8>)
@@ -946,7 +946,7 @@ void  bootloader_uart_read_data(void)
 		HAL_UART_Receive(C_UART,&bl_rx_buffer[1],rcv_len,HAL_MAX_DELAY);
  8000848:	79fb      	ldrb	r3, [r7, #7]
  800084a:	b29a      	uxth	r2, r3
- 800084c:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
+ 800084c:	f04f 33ff 	mov.w	r3, #4294967295
  8000850:	4932      	ldr	r1, [pc, #200]	; (800091c <bootloader_uart_read_data+0xfc>)
  8000852:	4831      	ldr	r0, [pc, #196]	; (8000918 <bootloader_uart_read_data+0xf8>)
  8000854:	f002 fc0c 	bl	8003070 <HAL_UART_Receive>
@@ -2304,7 +2304,7 @@ void bootloader_send_ack(uint8_t command_code, uint8_t follow_len)
  800109e:	737b      	strb	r3, [r7, #13]
 	HAL_UART_Transmit(C_UART,ack_buf,2,HAL_MAX_DELAY);
  80010a0:	f107 010c 	add.w	r1, r7, #12
- 80010a4:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
+ 80010a4:	f04f 33ff 	mov.w	r3, #4294967295
  80010a8:	2202      	movs	r2, #2
  80010aa:	4803      	ldr	r0, [pc, #12]	; (80010b8 <bootloader_send_ack+0x30>)
  80010ac:	f001 ff47 	bl	8002f3e <HAL_UART_Transmit>
@@ -2329,7 +2329,7 @@ void bootloader_send_nack(void)
  80010c4:	71fb      	strb	r3, [r7, #7]
 	HAL_UART_Transmit(C_UART,&nack,1,HAL_MAX_DELAY);
  80010c6:	1df9      	adds	r1, r7, #7
- 80010c8:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
+ 80010c8:	f04f 33ff 	mov.w	r3, #4294967295
  80010cc:	2201      	movs	r2, #1
  80010ce:	4803      	ldr	r0, [pc, #12]	; (80010dc <bootloader_send_nack+0x20>)
  80010d0:	f001 ff35 	bl	8002f3e <HAL_UART_Transmit>
@@ -2427,7 +2427,7 @@ void bootloader_uart_write_data(uint8_t *pBuffer,uint32_t len)
 	HAL_UART_Transmit(C_UART,pBuffer,len,HAL_MAX_DELAY);
  8001152:	683b      	ldr	r3, [r7, #0]
  8001154:	b29a      	uxth	r2, r3
- 8001156:	f04f 33ff 	mov.w	r3, #4294967295	; 0xffffffff
+ 8001156:	f04f 33ff 	mov.w	r3, #4294967295
  800115a:	6879      	ldr	r1, [r7, #4]
  800115c:	4803      	ldr	r0, [pc, #12]	; (800116c <bootloader_uart_write_data+0x24>)
  800115e:	f001 feee 	bl	8002f3e <HAL_UART_Transmit>
@@ -3732,7 +3732,7 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     HAL_NVIC_SetPriority(SysTick_IRQn, TickPriority, 0U);
  8001784:	2200      	movs	r2, #0
  8001786:	6879      	ldr	r1, [r7, #4]
- 8001788:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
+ 8001788:	f04f 30ff 	mov.w	r0, #4294967295
  800178c:	f000 f90b 	bl	80019a6 <HAL_NVIC_SetPriority>
     uwTickPrio = TickPriority;
  8001790:	4a06      	ldr	r2, [pc, #24]	; (80017ac <HAL_InitTick+0x5c>)
@@ -4005,7 +4005,7 @@ __STATIC_INLINE uint32_t NVIC_EncodePriority (uint32_t PriorityGroup, uint32_t P
 
   return (
            ((PreemptPriority & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL)) << SubPriorityBits) |
- 8001918:	f04f 32ff 	mov.w	r2, #4294967295	; 0xffffffff
+ 8001918:	f04f 32ff 	mov.w	r2, #4294967295
  800191c:	69bb      	ldr	r3, [r7, #24]
  800191e:	fa02 f303 	lsl.w	r3, r2, r3
  8001922:	43da      	mvns	r2, r3
@@ -4014,7 +4014,7 @@ __STATIC_INLINE uint32_t NVIC_EncodePriority (uint32_t PriorityGroup, uint32_t P
  8001928:	697b      	ldr	r3, [r7, #20]
  800192a:	409a      	lsls	r2, r3
            ((SubPriority     & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL)))
- 800192c:	f04f 31ff 	mov.w	r1, #4294967295	; 0xffffffff
+ 800192c:	f04f 31ff 	mov.w	r1, #4294967295
  8001930:	697b      	ldr	r3, [r7, #20]
  8001932:	fa01 f303 	lsl.w	r3, r1, r3
  8001936:	43d9      	mvns	r1, r3
@@ -4060,7 +4060,7 @@ __STATIC_INLINE uint32_t SysTick_Config(uint32_t ticks)
  8001968:	6053      	str	r3, [r2, #4]
   NVIC_SetPriority (SysTick_IRQn, (1UL << __NVIC_PRIO_BITS) - 1UL); /* set Priority for Systick Interrupt */
  800196a:	210f      	movs	r1, #15
- 800196c:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
+ 800196c:	f04f 30ff 	mov.w	r0, #4294967295
  8001970:	f7ff ff8e 	bl	8001890 <__NVIC_SetPriority>
   SysTick->VAL   = 0UL;                                             /* Load the SysTick Counter Value */
  8001974:	4b05      	ldr	r3, [pc, #20]	; (800198c <SysTick_Config+0x40>)
@@ -4633,7 +4633,7 @@ HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout)
   { 
     if(Timeout != HAL_MAX_DELAY)
  8001c1e:	687b      	ldr	r3, [r7, #4]
- 8001c20:	f1b3 3fff 	cmp.w	r3, #4294967295	; 0xffffffff
+ 8001c20:	f1b3 3fff 	cmp.w	r3, #4294967295
  8001c24:	d00c      	beq.n	8001c40 <FLASH_WaitForLastOperation+0x3c>
     {
       if((Timeout == 0U)||((HAL_GetTick() - tickstart ) > Timeout))
@@ -5111,7 +5111,7 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t
     /*Initialization of SectorError variable*/
     *SectorError = 0xFFFFFFFFU;
  8001eb6:	683b      	ldr	r3, [r7, #0]
- 8001eb8:	f04f 32ff 	mov.w	r2, #4294967295	; 0xffffffff
+ 8001eb8:	f04f 32ff 	mov.w	r2, #4294967295
  8001ebc:	601a      	str	r2, [r3, #0]
     
     if(pEraseInit->TypeErase == FLASH_TYPEERASE_MASSERASE)
@@ -8455,7 +8455,7 @@ static HAL_StatusTypeDef UART_WaitOnFlagUntilTimeout(UART_HandleTypeDef *huart, 
     /* Check for the Timeout */
     if (Timeout != HAL_MAX_DELAY)
  80031ce:	69bb      	ldr	r3, [r7, #24]
- 80031d0:	f1b3 3fff 	cmp.w	r3, #4294967295	; 0xffffffff
+ 80031d0:	f1b3 3fff 	cmp.w	r3, #4294967295
  80031d4:	d028      	beq.n	8003228 <UART_WaitOnFlagUntilTimeout+0x6c>
     {
       if ((Timeout == 0U) || ((HAL_GetTick() - Tickstart) > Timeout))

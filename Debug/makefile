@@ -24,24 +24,24 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-STM32F4xx_Custom_Bootloader.elf \
+STM32f4_bootloader.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-STM32F4xx_Custom_Bootloader.list \
+STM32f4_bootloader.list \
 
 OBJCOPY_BIN += \
-STM32F4xx_Custom_Bootloader.bin \
+STM32f4_bootloader.bin \
 
 
 # All Target
-all: STM32F4xx_Custom_Bootloader.elf secondary-outputs
+all: STM32f4_bootloader.elf secondary-outputs
 
 # Tool invocations
-STM32F4xx_Custom_Bootloader.elf: $(OBJS) $(USER_OBJS) /home/vicky/STM32CubeIDE/workspace_1.3.0/STM32F4xx_Custom_Bootloader/STM32F429ZITX_FLASH.ld
-	arm-none-eabi-gcc -o "STM32F4xx_Custom_Bootloader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/vicky/STM32CubeIDE/workspace_1.3.0/STM32F4xx_Custom_Bootloader/STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32F4xx_Custom_Bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+STM32f4_bootloader.elf: $(OBJS) $(USER_OBJS) D:\STM32CubeIDE\workspace_1.0.2\STM32f4_bootloader\STM32F429ZITX_FLASH.ld
+	arm-none-eabi-gcc -o "STM32f4_bootloader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\STM32CubeIDE\workspace_1.0.2\STM32f4_bootloader\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32f4_bootloader.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -50,13 +50,13 @@ default.size.stdout: $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32F4xx_Custom_Bootloader.list: $(EXECUTABLES)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "STM32F4xx_Custom_Bootloader.list"
+STM32f4_bootloader.list: $(EXECUTABLES)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "STM32f4_bootloader.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32F4xx_Custom_Bootloader.bin: $(EXECUTABLES)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "STM32F4xx_Custom_Bootloader.bin"
+STM32f4_bootloader.bin: $(EXECUTABLES)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "STM32f4_bootloader.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
