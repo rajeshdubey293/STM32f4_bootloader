@@ -90,7 +90,7 @@ void _Error_Handler(char *, int);
 
 /*Bootloader function prototypes */
 
-void  bootloader_uart_read_data(void);
+void bootloader_uart_read_data(void);
 void bootloader_jump_to_user_app_1(void);
 void bootloader_jump_to_user_app_2(void);
 
@@ -108,6 +108,8 @@ void bootloader_handle_read_sector_protection_status(uint8_t *pBuffer);
 void bootloader_handle_read_otp(uint8_t *pBuffer);
 void bootloader_handle_dis_rw_protect(uint8_t *pBuffer);
 void bootloader_boot(void);
+void printmsg(char *format,...);
+
 
 void bootloader_send_ack(uint8_t command_code, uint8_t follow_len);
 void bootloader_send_nack(void);
@@ -172,8 +174,7 @@ uint16_t read_OB_rw_protection_status(void);
 //This command is used disable all sector read/write protection
 #define BL_DIS_R_W_PROTECT				0x5C
 
-#define BL_BOOT_APPLICATION_1		0x5D
-#define BL_BOOT_APPLICATION_2		0x5E
+#define BL_BOOT_APPLICATION				0x5D
 /* ACK and NACK bytes*/
 #define BL_ACK   0XA5
 #define BL_NACK  0X7F

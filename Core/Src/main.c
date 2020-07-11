@@ -42,15 +42,13 @@ uint8_t supported_commands[] = {
 		BL_FLASH_ERASE,
 		BL_MEM_WRITE,
 		BL_READ_SECTOR_P_STATUS,
-		BL_BOOT_APPLICATION_1,
-		BL_BOOT_APPLICATION_2,} ;
+		BL_BOOT_APPLICATION} ;
 
 #define BL_DEBUG_MSG_EN
-
+//#define INTERRUPT_ON
 
 #define D_UART   &huart3
 #define C_UART   &huart1
-static void printmsg(char *format,...);
 #define BL_RX_LEN  200
 uint8_t bl_rx_buffer[BL_RX_LEN];
 
@@ -83,7 +81,7 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-char pData[] = "Hey Buddy\r\n";
+//char pData[] = "Hey Buddy\r\n";
 /* USER CODE END 0 */
 
 /**
@@ -128,34 +126,40 @@ int main(void)
 	/* USER CODE END WHILE */
 
 	/* USER CODE BEGIN 3 */
-	printmsg("Press User Key to Stop Auto Boot in\r\n");
-	HAL_Delay(500);
-	printmsg("4 Seconds..\r\n");
-	HAL_Delay(1000);
-	printmsg("3 Seconds..\r\n");
+#ifdef INTERRUPT_ON
+	//printmsg("Press User Button to Abort Auto Boot Within \r\n");
+	printmsg("Press User Button to Boot Application2 Within \r\n");
+	HAL_Delay(400);
+	printmsg("3 Seconds...\r\n");
 	HAL_Delay(1000);
 	printmsg("2 Seconds..\r\n");
 	HAL_Delay(1000);
-	printmsg("1 Seconds..\r\n");
+	printmsg("1 Seconds.\r\n");
 	HAL_Delay(1000);
-	if ( HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET )
-	{
-		printmsg("BL_DEBUG_MSG:Button is Pressed .. Going to BL Mode\r\n");
+	printmsg("BL_DEBUG_MSG:User Button is Not Pressed !... Executing User Application !\r\n");
 
-		//we should continue in bootloader mode
-		bootloader_uart_read_data();
+	//jump to user application
+	bootloader_jump_to_user_app_2();
+#else
+	/* Lets check whether button is pressed or not, if not pressed jump to user application */
+	  if ( HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0) == GPIO_PIN_SET )
+	  {
+		  printmsg("BL_DEBUG_MSG:Button is pressed .. going to BL mode\r\n");
 
-	}
-	else
-	{
-		printmsg("BL_DEBUG_MSG:Button is Not Pressed .. Executing User Application\r\n");
+		  //we should continue in bootloader mode
+		  //bootloader_uart_read_data();
+		  bootloader_jump_to_user_app_2();
 
-		//jump to user application
-		bootloader_jump_to_user_app_1();
+	  }
+	  else
+	  {
+		  printmsg("BL_DEBUG_MSG:Button is not pressed .. executing user app\r\n");
 
-	}
-	// }
-	/* USER CODE END 3 */
+			//jump to user application
+			bootloader_jump_to_user_app_1();
+
+	  }
+#endif
 }
 
 /**
@@ -341,6 +345,10 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void  bootloader_uart_read_data(void)
 {
+	printmsg("Hello From BootLoader\r\n");
+	printmsg("Connect This Board to Your PC using UART1(PA9/PA10) \r\n");
+	printmsg("then, Run Programmer.py\r\n");
+	printmsg("Enjoy..!! Made by Rajesh Dubey.!\r\n");
 	uint8_t rcv_len=0;
 
 	while(1)
@@ -389,15 +397,11 @@ void  bootloader_uart_read_data(void)
 		case BL_DIS_R_W_PROTECT:
 			bootloader_handle_dis_rw_protect(bl_rx_buffer);
 			break;
-		case BL_BOOT_APPLICATION_1:
+		case BL_BOOT_APPLICATION:
 			bootloader_jump_to_user_app_1();
-		case BL_BOOT_APPLICATION_2:
-					bootloader_jump_to_user_app_1();
 		default:
 			printmsg("BL_DEBUG_MSG:Invalid command code received from host \r\n");
 			break;
-
-
 		}
 
 	}
@@ -413,16 +417,15 @@ void  bootloader_uart_read_data(void)
 
 void bootloader_jump_to_user_app_1(void)
 {
-
 	//just a function pointer to hold the address of the reset handler of the user app.
 	void (*app_reset_handler)(void);
 
-	printmsg("BL_DEBUG_MSG:bootloader_jump_to_user_app\r\n");
+	//printmsg("BL_DEBUG_MSG:bootloader_jump_to_user_app\r\n");
 
 
 	// 1. configure the MSP by reading the value from the base address of the sector 2
 	uint32_t msp_value = *(volatile uint32_t *)FLASH_SECTOR2_BASE_ADDRESS;
-	printmsg("BL_DEBUG_MSG:MSP value : %#x\r\n",msp_value);
+	//printmsg("BL_DEBUG_MSG:MSP value : %#x\r\n",msp_value);
 
 	//This function comes from CMSIS.
 	__set_MSP(msp_value);
@@ -433,12 +436,12 @@ void bootloader_jump_to_user_app_1(void)
 	 * from the location FLASH_SECTOR2_BASE_ADDRESS+4
 	 */
 	uint32_t resethandler_address = *(volatile uint32_t *) (FLASH_SECTOR2_BASE_ADDRESS + 4);
-	printmsg("BL_DEBUG_MSG: Reset Handler Addr_1st : %#x\r\n",resethandler_address);
+	//printmsg("BL_DEBUG_MSG: Reset Handler Addr_1st : %#x\r\n",resethandler_address);
 
 
 	app_reset_handler = (void*) resethandler_address;
 	//app_reset_handler =(void*) 0x08008789U;
-	printmsg("BL_DEBUG_MSG: Application Reset Handler Addr : %#x\r\n",app_reset_handler);
+	//printmsg("BL_DEBUG_MSG: Application Reset Handler Addr : %#x\r\n",app_reset_handler);
 
 
 	//3. jump to reset handler of the user application
@@ -446,19 +449,17 @@ void bootloader_jump_to_user_app_1(void)
 
 }
 
-
 void bootloader_jump_to_user_app_2(void)
 {
-
 	//just a function pointer to hold the address of the reset handler of the user app.
 	void (*app_reset_handler)(void);
 
-	printmsg("BL_DEBUG_MSG:bootloader_jump_to_user_app\r\n");
+	//printmsg("BL_DEBUG_MSG:bootloader_jump_to_user_app\r\n");
 
 
 	// 1. configure the MSP by reading the value from the base address of the sector 2
 	uint32_t msp_value = *(volatile uint32_t *)FLASH_SECTOR3_BASE_ADDRESS;
-	printmsg("BL_DEBUG_MSG:MSP value : %#x\r\n",msp_value);
+	//printmsg("BL_DEBUG_MSG:MSP value : %#x\r\n",msp_value);
 
 	//This function comes from CMSIS.
 	__set_MSP(msp_value);
@@ -469,12 +470,12 @@ void bootloader_jump_to_user_app_2(void)
 	 * from the location FLASH_SECTOR2_BASE_ADDRESS+4
 	 */
 	uint32_t resethandler_address = *(volatile uint32_t *) (FLASH_SECTOR3_BASE_ADDRESS + 4);
-	printmsg("BL_DEBUG_MSG: Reset Handler Addr_1st : %#x\r\n",resethandler_address);
+	//printmsg("BL_DEBUG_MSG: Reset Handler Addr_1st : %#x\r\n",resethandler_address);
 
 
 	app_reset_handler = (void*) resethandler_address;
 	//app_reset_handler =(void*) 0x08008789U;
-	printmsg("BL_DEBUG_MSG: Application Reset Handler Addr : %#x\r\n",app_reset_handler);
+	//printmsg("BL_DEBUG_MSG: Application Reset Handler Addr : %#x\r\n",app_reset_handler);
 
 
 	//3. jump to reset handler of the user application
